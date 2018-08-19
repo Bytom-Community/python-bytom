@@ -128,7 +128,6 @@ class BytomAPI(object):
                 path="/estimate-transaction-gas",
                 accepts_parameters=["transaction_template"])
 
-
     create_access_token = bind_method(
                 path="/create-access-token",
                 accepts_parameters=["id", "type"])
@@ -171,7 +170,7 @@ class BytomAPI(object):
 
     list_unconfirmed_transactions = bind_method(
                 path="/list-unconfirmed-transactions",
-                accepts_parameters=["total", "tx_ids"])
+                accepts_parameters=NO_ACCEPT_PARAMETERS)
 
     decode_raw_transaction = bind_method(
                 path="/decode-raw-transaction",
@@ -191,7 +190,7 @@ class BytomAPI(object):
 
     get_block_header = bind_method(
                 path="/get-block-header",
-                accepts_parameters=["block_height", "block_height"])
+                accepts_parameters=["block_height", "block_hash"])
 
     get_difficulty = bind_method(
                 path="/get-difficulty",
@@ -227,7 +226,7 @@ class BytomAPI(object):
 
     compile = bind_method(
                 path="/compile",
-                accepts_parameters=["contract"])
+                accepts_parameters=["contract", "args"])
 
     list_peers = bind_method(
                 path="/list-peers",
