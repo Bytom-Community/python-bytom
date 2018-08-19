@@ -48,15 +48,15 @@ use python object as return:
 ```python
 ret = api.wallet_info()
 print ret.best_block_height # 76251
-print ret.wallet_height 	# 76251
+print ret.wallet_height     # 76251
 ```
 or
 
 use Dict  as return:
 ```python
 ret = api.get_block_count(return_json=True)
-print ret 					# {u'block_count': 76409}
-print ret["block_count"]	# 76409
+print ret                   # {u'block_count': 76409}
+print ret["block_count"]    # 76409
 ```
 
 
