@@ -1,0 +1,5 @@
+requests==2.19.1
+simplejson==3.16.0
+six==1.11.0
+requests-mock==1.5.2
+pytest==3.7.2
