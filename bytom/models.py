@@ -26,3 +26,5 @@ class APIModel(object):
         else:
             return unicode(self).encode('utf-8')
 
+    def __unicode__(self):
+        return "APIModel"
