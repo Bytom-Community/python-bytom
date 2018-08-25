@@ -1,4 +1,9 @@
 # python-bytom
+
+[![PyPI](https://img.shields.io/pypi/v/python-bytom.svg)](https://pypi.org/project/python-bytom)
+[![GitHub](https://img.shields.io/pypi/l/python-bytom.svg)](https://pypi.org/project/python-bytom)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/python-bytom.svg)](https://pypi.org/project/python-bytom)
+
 A Python 2/3 SDK for the Bytom https://github.com/Bytom/bytom/wiki
 
 python-bytom return an object that parsed from `json` for each method, set `return_json=True` get the original API response.
