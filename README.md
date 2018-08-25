@@ -9,6 +9,8 @@ python-bytom return an object that parsed from `json` for each method, set `retu
 - [Getting started](#getting-started)
 	- [Create Bytom Client](#create-bytom-client)
 	- [API response](#api-response)
+- [Sign transaction offline](#sign-transaction-offline)
+	- [usage examples](#usage-examples)
 - [Interaction with bytom](#interaction-with-bytom)
 - [Contact](#contact)
 - [License](#license)
@@ -59,6 +61,161 @@ print ret                   # {u'block_count': 76409}
 print ret["block_count"]    # 76409
 ```
 
+### Sign transaction offline
+now we can use python-bytom to implement sign trasaction offline.
+
+Parameters:
+* private keys list
+* transaction object or dict
+* raw transaction object or dict
+
+#### usage examples:
+method:
+```python
+from bytom.signatures import Signatures
+
+result = Signatures.generate_signatures(privates, template, raw_transaction)
+```
+single key example:
+```python
+from bytom.signatures import Signatures
+from bytom.models import APIModel
+from bytom.client import BytomAPI
+
+api = BytomAPI()
+
+asset_id = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+address = "sm1qvyus3s5d7jv782syuqe3qrh65fx23lgpzf33em"
+actions = [
+    {
+      "account_id": "0G0NLBNU00A02",
+      "amount": 40000000,
+      "asset_id": asset_id,
+      "type": "spend_account"
+    },
+    {
+      "account_id": "0G0NLBNU00A02",
+      "amount": 300000000,
+      "asset_id": asset_id,
+      "type": "spend_account"
+    },
+    {
+      "amount": 30000000,
+      "asset_id": asset_id,
+      "address": address,
+      "type": "control_address"
+    }
+]
+template = api.build_transaction(base_transaction=None, actions=actions, ttl=0, time_range=1521625823, return_json=True)
+print("template: " + str(template))
+decoded_tx = api.decode_raw_transaction(template["raw_transaction"], return_json=True)
+print("decoded_tx: " + str(decoded_tx))
+private_keys = ["10fdbc41a4d3b8e5a0f50dd3905c1660e7476d4db3dbd9454fa4347500a633531c487e8174ffc0cfa76c3be6833111a9b8cd94446e37a76ee18bb21a7d6ea66b"]
+print("private_keys: " + str(private_keys))
+basic_signed = Signatures.generate_signatures(private_keys, template, decoded_tx)
+print("basic_signed: " + str(basic_signed))
+result = api.sign_transaction("", basic_signed, return_json=True)
+print("result raw_transaction: " + str(result))
+```
+
+multi keys example:
+```python
+from bytom.signatures import Signatures
+from bytom.models import APIModel
+from bytom.client import BytomAPI
+
+api = BytomAPI()
+
+asset_id = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+address = "sm1qvyus3s5d7jv782syuqe3qrh65fx23lgpzf33em"
+actions = [
+    {
+      "account_id": "0G1RPP6OG0A06",
+      "amount": 40000000,
+      "asset_id": asset_id,
+      "type": "spend_account"
+    },
+    {
+      "account_id": "0G1RPP6OG0A06",
+      "amount": 300000000,
+      "asset_id": asset_id,
+      "type": "spend_account"
+    },
+    {
+      "amount": 30000000,
+      "asset_id": asset_id,
+      "address": address,
+      "type": "control_address"
+    }
+]
+template = api.build_transaction(base_transaction=None, actions=actions, ttl=10, time_range=1521625823, return_json=True)
+print("template: " + str(template))
+decoded_tx = api.decode_raw_transaction(template["raw_transaction"], return_json=True)
+print("decoded_tx: " + str(decoded_tx))
+private_keys = ["08bdbd6c22856c5747c930f64d0e5d58ded17c4473910c6c0c3f94e485833a436247976253c8e29e961041ad8dfad9309744255364323163837cbef2483b4f67",
+                "40c821f736f60805ad59b1fea158762fa6355e258601dfb49dda6f672092ae5adf072d5cab2ceaaa0d68dd3fe7fa04869d95afed8c20069f446a338576901e1b"]
+print("private_keys: " + str(private_keys))
+basic_signed = Signatures.generate_signatures(private_keys, template, decoded_tx)
+print("basic_signed: " + str(basic_signed))
+result = api.sign_transaction("", basic_signed, return_json=True)
+print("result raw_transaction: " + str(result))
+```
+
+multi keys and multi inputs example:
+```python
+from bytom.signatures import Signatures
+from bytom.models import APIModel
+from bytom.client import BytomAPI
+
+api = BytomAPI()
+
+asset_id = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+address = "sm1qvyus3s5d7jv782syuqe3qrh65fx23lgpzf33em"
+actions = [
+    {
+      "account_id": "0G1RPP6OG0A06",
+      "amount": 40000000,
+      "asset_id": asset_id,
+      "type": "spend_account"
+    },
+    {
+      "account_id": "0G1RPP6OG0A06",
+      "amount": 300000000,
+      "asset_id": asset_id,
+      "type": "spend_account"
+    },
+    {
+      "account_id": "0G1Q6V1P00A02",
+      "amount": 40000000,
+      "asset_id": asset_id,
+      "type": "spend_account"
+    },
+    {
+      "account_id": "0G1Q6V1P00A02",
+      "amount": 300000000,
+      "asset_id": asset_id,
+      "type": "spend_account"
+    },
+    {
+      "amount": 60000000,
+      "asset_id": asset_id,
+      "address": address,
+      "type": "control_address"
+    }
+]
+template = api.build_transaction(base_transaction=None, actions=actions, ttl=10, time_range=1521625823, return_json=True)
+print("template: " + str(template))
+decoded_tx = api.decode_raw_transaction(template["raw_transaction"], return_json=True)
+print("decoded_tx: " + str(decoded_tx))
+private_keys = ["08bdbd6c22856c5747c930f64d0e5d58ded17c4473910c6c0c3f94e485833a436247976253c8e29e961041ad8dfad9309744255364323163837cbef2483b4f67",
+                "40c821f736f60805ad59b1fea158762fa6355e258601dfb49dda6f672092ae5adf072d5cab2ceaaa0d68dd3fe7fa04869d95afed8c20069f446a338576901e1b",
+                "08bdbd6c22856c5747c930f64d0e5d58ded17c4473910c6c0c3f94e485833a436247976253c8e29e961041ad8dfad9309744255364323163837cbef2483b4f67"]
+print("private_keys: " + str(private_keys))
+basic_signed = Signatures.generate_signatures(private_keys, template, decoded_tx)
+print("basic_signed: " + str(basic_signed))
+result = api.sign_transaction("", basic_signed, return_json=True)
+print("result raw_transaction: " + str(result))
+```
 
 ### Interaction with bytom
 
