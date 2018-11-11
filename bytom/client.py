@@ -13,6 +13,9 @@ class BytomAPI(object):
     def __init__(self, url=default_url, access_token=""):
         self.url = url
         self.access_token = access_token
+        self.auth = ()
+        if self.access_token != "":
+            self.auth = tuple(self.access_token.split(":"))
 
     # Available with wallet enable
     create_key = bind_method(

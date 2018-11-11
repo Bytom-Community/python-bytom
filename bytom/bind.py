@@ -58,11 +58,6 @@ def bind_method(**config):
                     raise BytomClientError("Parameter %s already supplied" % key)
                 self.parameters[key] = value
 
-            if "access_token" in self.accepts_parameters and \
-                    self.parameters.has_key("access_token") is False and \
-                        self.api.access_token != "":
-                self.parameters["access_token"] = self.api.access_token
-
         def _do_api_request(self, url, body=None, headers=None):
             response = RPCRequest(self.api).make_request(url, body=body, headers=headers)
             try:

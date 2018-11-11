@@ -32,5 +32,5 @@ class RPCRequest(object):
             headers.update({"User-Agent": "%s Python Client - %s" % (self.api.api_name, self.api.version)})
         if 'Content-Type' not in headers:
             headers.update({"Content-Type": "application/x-www-form-urlencoded; charset=utf-8"})
-        return requests.post(url, data=body, headers=headers)
+        return requests.post(url, data=body, headers=headers, auth=self.api.auth)
 
