@@ -20,7 +20,7 @@ class BytomAPI(object):
     # Available with wallet enable
     create_key = bind_method(
                 path="/create-key",
-                accepts_parameters=["alias", "password"])
+                accepts_parameters=["alias", "password", "language", "mnemonic"])
 
     list_keys = bind_method(
                 path="/list-keys",
@@ -28,6 +28,10 @@ class BytomAPI(object):
 
     delete_key = bind_method(
                 path="/delete-key",
+                accepts_parameters=["xpub", "password"])
+
+    check_key_password = bind_method(
+                path="/check-key-password",
                 accepts_parameters=["xpub", "password"])
 
     reset_key_password = bind_method(
@@ -40,7 +44,7 @@ class BytomAPI(object):
 
     list_accounts = bind_method(
                 path="/list-accounts",
-                accepts_parameters=NO_ACCEPT_PARAMETERS)
+                accepts_parameters=["id", "alias"])
 
     delete_account = bind_method(
                 path="/delete-account",
@@ -52,11 +56,27 @@ class BytomAPI(object):
 
     list_addresses = bind_method(
                 path="/list-addresses",
-                accepts_parameters=["account_alias", "account_id"])
+                accepts_parameters=["account_alias", "account_id", "from", "count"])
 
     validate_address = bind_method(
                 path="/validate-address",
                 accepts_parameters=["address"])
+
+    get_mining_address = bind_method(
+                path="/get-mining-address",
+                accepts_parameters=NO_ACCEPT_PARAMETERS)
+
+    set_mining_address = bind_method(
+                path="/set-mining-address",
+                accepts_parameters=["mining_address"])
+
+    get_coinbase_arbitrary = bind_method(
+                path="/get-coinbase-arbitrary",
+                accepts_parameters=NO_ACCEPT_PARAMETERS)
+
+    set_coinbase_arbitrary = bind_method(
+                path="/set-coinbase-arbitrary",
+                accepts_parameters=["arbitrary"])
 
     list_pubkeys = bind_method(
                 path="/list-pubkeys",
@@ -64,7 +84,7 @@ class BytomAPI(object):
 
     create_asset = bind_method(
                 path="/create-asset",
-                accepts_parameters=["root_xpubs", "alias", "quorum", "definition", "access_token"])
+                accepts_parameters=["alias", "definition", "root_xpubs", "quorum", "issuance_program"])
 
     get_asset = bind_method(
                 path="/get-asset",
@@ -80,11 +100,11 @@ class BytomAPI(object):
 
     list_balances = bind_method(
                 path="/list-balances",
-                accepts_parameters=NO_ACCEPT_PARAMETERS)
+                accepts_parameters=["account_id", "account_alias"])
 
     list_unspent_outputs = bind_method(
                 path="/list-unspent-outputs",
-                accepts_parameters=["id"])
+                accepts_parameters=["id", "unconfirmed", "smart_contract", "from", "count", "account_id", "account_alias"])
 
     backup_wallet = bind_method(
                 path="/backup-wallet",
@@ -106,26 +126,42 @@ class BytomAPI(object):
                 path="/sign-message",
                 accepts_parameters=["address", "message", "password"])
 
+    decode_program = bind_method(
+                path="/decode-program",
+                accepts_parameters=["program"])
+
     get_transaction = bind_method(
                 path="/get-transaction",
                 accepts_parameters=["tx_id"])
 
     list_transactions = bind_method(
                 path="/list-transactions",
-                accepts_parameters=["id", "account_id", "detail", "unconfirmed"])
+                accepts_parameters=["id", "account_id", "detail", "unconfirmed", "from", "count"])
 
     build_transaction = bind_method(
                 path="/build-transaction",
+                accepts_parameters=["base_transaction", "ttl", "time_range", "actions"])
+
+    build_chain_transactions = bind_method(
+                path="/build-chain-transactions",
                 accepts_parameters=["base_transaction", "ttl", "time_range", "actions"])
 
     sign_transaction = bind_method(
                 path="/sign-transaction",
                 accepts_parameters=["password", "transaction"])
 
+    sign_transactions = bind_method(
+                path="/sign-transactions",
+                accepts_parameters=["password", "transaction"])
+
     # Available whether or not the wallet is open
     submit_transaction = bind_method(
                 path="/submit-transaction",
                 accepts_parameters=["raw_transaction"])
+
+    submit_transactions = bind_method(
+                path="/submit-transactions",
+                accepts_parameters=["raw_transactions"])
 
     estimate_transaction_gas = bind_method(
                 path="/estimate-transaction-gas",
@@ -223,10 +259,6 @@ class BytomAPI(object):
                 path="/verify-message",
                 accepts_parameters=["address", "derived_xpub", "message", "signature"])
 
-    decode_program = bind_method(
-                path="/decode-program",
-                accepts_parameters=["program"])
-
     compile = bind_method(
                 path="/compile",
                 accepts_parameters=["contract", "args"])
@@ -237,7 +269,7 @@ class BytomAPI(object):
 
     disconnect_peer = bind_method(
                 path="/disconnect-peer",
-                accepts_parameters=["peerId"])
+                accepts_parameters=["peer_id"])
 
     connect_peer = bind_method(
                 path="/connect-peer",
