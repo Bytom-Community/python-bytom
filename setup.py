@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name="python-bytom",
-      version="1.0.1",
+      version="1.0.2",
       description="Bytom Python SDK",
       license="MIT",
       install_requires=["simplejson","requests", "six", "pysha3"],
