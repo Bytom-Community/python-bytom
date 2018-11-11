@@ -64,8 +64,6 @@ def bind_method(**config):
                 self.parameters["access_token"] = self.api.access_token
 
         def _do_api_request(self, url, body=None, headers=None):
-            headers = headers or {}
-
             response = RPCRequest(self.api).make_request(url, body=body, headers=headers)
             try:
                 api_ret = response.json()

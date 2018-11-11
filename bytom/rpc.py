@@ -19,7 +19,6 @@ class RPCRequest(object):
         return body
 
     def prepare_request(self, path, params):
-        url = body = None
         headers = {}
 
         url = self._full_url(path) 
@@ -29,9 +28,9 @@ class RPCRequest(object):
 
     def make_request(self, url, body=None, headers=None):
         headers = headers or {}
-        if not 'User-Agent' in headers:
+        if 'User-Agent' not in headers:
             headers.update({"User-Agent": "%s Python Client - %s" % (self.api.api_name, self.api.version)})
-        if not 'Content-Type' in headers:
+        if 'Content-Type' not in headers:
             headers.update({"Content-Type": "application/x-www-form-urlencoded; charset=utf-8"})
         return requests.post(url, data=body, headers=headers)
 
