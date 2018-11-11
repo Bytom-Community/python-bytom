@@ -6,7 +6,7 @@
 
 A Python 2/3 SDK for the Bytom https://github.com/Bytom/bytom/wiki
 
-python-bytom return an object that parsed from `json` for each method, set `return_json=True` get the original API response.
+python-bytom return an object that parsed from `json` for each method, set `return_json=True` get the original API response, set `return_dict=True` get dict object.
 
 ### Table of Contents
 - [Installation](#installation)
@@ -59,11 +59,17 @@ print ret.wallet_height     # 76251
 ```
 or
 
-use Dict  as return:
+use Dict object as return:
 ```python
-ret = api.get_block_count(return_json=True)
+ret = api.get_block_count(return_dict=True)
 print ret                   # {u'block_count': 76409}
 print ret["block_count"]    # 76409
+```
+
+use original API response (JSON) as return:
+```python
+ret = api.get_block_count(return_json=True)
+print ret                   # '{"block_count": 80267}'
 ```
 
 ### Sign transaction offline
@@ -111,15 +117,15 @@ actions = [
       "type": "control_address"
     }
 ]
-template = api.build_transaction(base_transaction=None, actions=actions, ttl=0, time_range=1521625823, return_json=True)
+template = api.build_transaction(base_transaction=None, actions=actions, ttl=0, time_range=1521625823, return_dict=True)
 print("template: " + str(template))
-decoded_tx = api.decode_raw_transaction(template["raw_transaction"], return_json=True)
+decoded_tx = api.decode_raw_transaction(template["raw_transaction"], return_dict=True)
 print("decoded_tx: " + str(decoded_tx))
 private_keys = ["10fdbc41a4d3b8e5a0f50dd3905c1660e7476d4db3dbd9454fa4347500a633531c487e8174ffc0cfa76c3be6833111a9b8cd94446e37a76ee18bb21a7d6ea66b"]
 print("private_keys: " + str(private_keys))
 basic_signed = Signatures.generate_signatures(private_keys, template, decoded_tx)
 print("basic_signed: " + str(basic_signed))
-result = api.sign_transaction("", basic_signed, return_json=True)
+result = api.sign_transaction("", basic_signed, return_dict=True)
 print("result raw_transaction: " + str(result))
 ```
 
@@ -153,16 +159,16 @@ actions = [
       "type": "control_address"
     }
 ]
-template = api.build_transaction(base_transaction=None, actions=actions, ttl=10, time_range=1521625823, return_json=True)
+template = api.build_transaction(base_transaction=None, actions=actions, ttl=10, time_range=1521625823, return_dict=True)
 print("template: " + str(template))
-decoded_tx = api.decode_raw_transaction(template["raw_transaction"], return_json=True)
+decoded_tx = api.decode_raw_transaction(template["raw_transaction"], return_dict=True)
 print("decoded_tx: " + str(decoded_tx))
 private_keys = ["08bdbd6c22856c5747c930f64d0e5d58ded17c4473910c6c0c3f94e485833a436247976253c8e29e961041ad8dfad9309744255364323163837cbef2483b4f67",
                 "40c821f736f60805ad59b1fea158762fa6355e258601dfb49dda6f672092ae5adf072d5cab2ceaaa0d68dd3fe7fa04869d95afed8c20069f446a338576901e1b"]
 print("private_keys: " + str(private_keys))
 basic_signed = Signatures.generate_signatures(private_keys, template, decoded_tx)
 print("basic_signed: " + str(basic_signed))
-result = api.sign_transaction("", basic_signed, return_json=True)
+result = api.sign_transaction("", basic_signed, return_dict=True)
 print("result raw_transaction: " + str(result))
 ```
 
@@ -208,9 +214,9 @@ actions = [
       "type": "control_address"
     }
 ]
-template = api.build_transaction(base_transaction=None, actions=actions, ttl=10, time_range=1521625823, return_json=True)
+template = api.build_transaction(base_transaction=None, actions=actions, ttl=10, time_range=1521625823, return_dict=True)
 print("template: " + str(template))
-decoded_tx = api.decode_raw_transaction(template["raw_transaction"], return_json=True)
+decoded_tx = api.decode_raw_transaction(template["raw_transaction"], return_dict=True)
 print("decoded_tx: " + str(decoded_tx))
 private_keys = ["08bdbd6c22856c5747c930f64d0e5d58ded17c4473910c6c0c3f94e485833a436247976253c8e29e961041ad8dfad9309744255364323163837cbef2483b4f67",
                 "40c821f736f60805ad59b1fea158762fa6355e258601dfb49dda6f672092ae5adf072d5cab2ceaaa0d68dd3fe7fa04869d95afed8c20069f446a338576901e1b",
@@ -218,7 +224,7 @@ private_keys = ["08bdbd6c22856c5747c930f64d0e5d58ded17c4473910c6c0c3f94e485833a4
 print("private_keys: " + str(private_keys))
 basic_signed = Signatures.generate_signatures(private_keys, template, decoded_tx)
 print("basic_signed: " + str(basic_signed))
-result = api.sign_transaction("", basic_signed, return_json=True)
+result = api.sign_transaction("", basic_signed, return_dict=True)
 print("result raw_transaction: " + str(result))
 ```
 

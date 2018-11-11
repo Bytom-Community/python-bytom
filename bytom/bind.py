@@ -2,6 +2,7 @@
 # coding=utf-8
 
 import six
+import simplejson
 from .rpc import RPCRequest
 from .models import APIModel
 
@@ -35,6 +36,7 @@ def bind_method(**config):
         def __init__(self, api, *args, **kwargs):
             self.api = api
             self.return_json = kwargs.pop("return_json", False)
+            self.return_dict = kwargs.pop("return_dict", False)
             self.parameters = {}
             self._build_parameters(args, kwargs)
 
@@ -76,6 +78,8 @@ def bind_method(**config):
             data = api_ret.get("data", {})
 
             if self.return_json:
+                return simplejson.dumps(data)
+            elif self.return_dict:
                 return data
             else:
                 return APIModel(data).object_from_dictionary()
