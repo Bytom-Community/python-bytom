@@ -8,7 +8,7 @@ NO_ACCEPT_PARAMETERS = []
 class BytomAPI(object):
     default_url = "http://localhost:9888"
     api_name = "Bytom"
-    version = "1.0.2"
+    version = "1.0.3"
 
     def __init__(self, url=default_url, access_token=""):
         self.url = url
